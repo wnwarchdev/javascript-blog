@@ -1,13 +1,19 @@
-@import url('https://fonts.googleapis.com/css?family=Oswald:400,600|Sacramento|Source+Sans+Pro:300&subset=latin-ext');
+@import url('https://fonts.googleapis.com/css?family=Holtwood+One+SC&display=swap');
 
 /* Variables */
 
 $color-light: #fff;
 $color-dark: #444;
 
-$font-logo: 'Sacramento', cursive;
-$font-header: 'Oswald', sans-serif;
+$font-logo: 'Holtwood One SC', serif;
+$font-header: 'Holtwood One SC', serif;
 $font-text: 'Source Sans Pro', sans-serif;
+
+/*Animation*/
+@keyframes fadein {
+    from { transform: scale(0.1) rotate(7000deg) skew(-20deg, -20deg); opacity: .5; background: #c8c8c8;}
+    to { transform: scale(1); opacity: 1;}
+}
 
 /* Global */
 
@@ -27,6 +33,7 @@ body {
 .container {
   max-width: 1140px;
   margin: 0 auto;
+  position: relative;
 }
 
 .section-title {
@@ -54,14 +61,15 @@ body {
 
 .posts {
   flex: 2 0 0;
+
 }
 
 .sidebar, .posts {
   background: $color-light;
   margin-right: 10px;
   padding: 40px;
-  border: 1px solid $color-dark;
-  border-radius: 5px;
+  //border: 1px solid $color-dark;
+  //border-radius: 5px;
 }
 
 /* Logo */
@@ -72,6 +80,20 @@ body {
   font-size: 104px;
   line-height: 1;
   text-align: center;
+  margin: 20px;
+  transform: rotate(-3deg);
+  z-index: 50;
+  position: relative;
+  text-shadow: 2px 2px black;
+}
+
+.img-logo {
+  width:240px;
+  height:140px;
+  display: block;
+  position: absolute;
+  right:0px;
+  transform: translate(-20%, -100px);
 }
 
 /* Lists */
@@ -105,6 +127,11 @@ body {
   display: none;
   &.active {
     display: block;
+    border: 2px solid black;
+    padding: 20px;
+    animation-timing-function: cubic-bezier(0,.96,1,.76);
+    box-shadow: 2px 2px 2px black;
+    animation: fadein 1.2s;
   }
 }
 

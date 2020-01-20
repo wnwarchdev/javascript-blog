@@ -1,5 +1,18 @@
-@import url("https://fonts.googleapis.com/css?family=Oswald:400,600|Sacramento|Source+Sans+Pro:300&subset=latin-ext");
+@import url("https://fonts.googleapis.com/css?family=Holtwood+One+SC&display=swap");
 /* Variables */
+/*Animation*/
+@keyframes fadein {
+  from {
+    transform: scale(0.1) rotate(7000deg) skew(-20deg, -20deg);
+    opacity: .5;
+    background: #c8c8c8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* Global */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -17,12 +30,13 @@ body {
 .container {
   max-width: 1140px;
   margin: 0 auto;
+  position: relative;
 }
 
 .section-title {
   font-size: 22px;
   text-transform: uppercase;
-  font-family: "Oswald", sans-serif;
+  font-family: "Holtwood One SC", serif;
   font-weight: 600;
 }
 
@@ -53,17 +67,29 @@ body {
   background: #fff;
   margin-right: 10px;
   padding: 40px;
-  border: 1px solid #444;
-  border-radius: 5px;
 }
 
 /* Logo */
 .logo {
-  font-family: "Sacramento", cursive;
+  font-family: "Holtwood One SC", serif;
   font-weight: 400;
   font-size: 104px;
   line-height: 1;
   text-align: center;
+  margin: 20px;
+  transform: rotate(-3deg);
+  z-index: 50;
+  position: relative;
+  text-shadow: 2px 2px black;
+}
+
+.img-logo {
+  width: 240px;
+  height: 140px;
+  display: block;
+  position: absolute;
+  right: 0px;
+  transform: translate(-20%, -100px);
 }
 
 /* Lists */
@@ -93,6 +119,11 @@ body {
 
 .post.active {
   display: block;
+  border: 2px solid black;
+  padding: 20px;
+  animation-timing-function: cubic-bezier(0, 0.96, 1, 0.76);
+  box-shadow: 2px 2px 2px black;
+  animation: fadein 1.2s;
 }
 
 .post-author {
