@@ -48,14 +48,14 @@
 
 
       const articleId = article.getAttribute('id');
-      console.log(articleId);
+      //console.log(articleId);
 
       const articleTitle = article.querySelector(optTitleSelector).innerHTML;
-      console.log(articleTitle);
+      //console.log(articleTitle);
 
       const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
       html = html + linkHTML;
-      console.log(linkHTML);
+      //console.log(linkHTML);
     }
 
     titleList.innerHTML = html;
@@ -69,9 +69,14 @@
 
   generateTitleLinks();
 
+  function calculateTagsParams() {
+
+
+  }
+
   function generateTags(){ //deklaracja funkcji dodajacej tagi pod artykulem
     /* [NEW] create a new variable allTags with an empty array */
-    let allTags = [];
+    let allTags = {};
     /* [DONE] find all articles */
     //const titleList = document.querySelectorAll(optArticleSelector);
     const titleList = document.querySelectorAll(optArticleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
@@ -99,9 +104,12 @@
         //console.log(html);
         /* [DONE] END LOOP: for each tag */
         /* [NEW] check if this link is NOT already in allTags */
-        if(allTags.indexOf(linkHTML) == -1){
-          /* [NEW] add generated code to allTags array */
-          allTags.push(linkHTML);
+        /* [NEW] check if this link is NOT already in allTags */
+        if(!allTags[tag]) {
+          /* [NEW] add tag to allTags object */
+          allTags[tag] = 1;
+        } else {
+          allTags[tag]++;
         }
       }
       /* [DONE] insert HTML of all the links into the tags wrapper */
@@ -110,9 +118,23 @@
       /* [DONE] END LOOP: for every article: */
       /* [NEW] find list of tags in right column */
       const tagList = document.querySelector('.tags');
+      //console.log(tagList);
+      //const tagsParams = calculateTagsParams(allTags);
+      //console.log('tagsParams:', tagsParams)
+      /* [NEW] create variable for all links HTML code */
+      let allTagsHTML = '';
 
-      /* [NEW] add html from allTags to tagList */
-      tagList.innerHTML = allTags.join(' ');
+      /* [NEW] START LOOP: for each tag in allTags: */
+      for(let tag in allTags){
+        //console.log(tag);
+        //console.log(allTags[tag]);
+        /* [NEW] generate code of a link and add it to allTagsHTML */
+        allTagsHTML += '<a href="#tag-' + tag + '">' + tag + '</a>' + ' (' + allTags[tag] + ') ';
+      }
+      /* [NEW] END LOOP: for each tag in allTags: */
+
+      /*[NEW] add HTML from allTagsHTML to tagList */
+      tagList.innerHTML = allTagsHTML;
     }
   }
 
@@ -140,10 +162,11 @@
     /* [DONE] END LOOP: for each active tag link */
     }
     /* [DONE] find all tag links with "href" attribute equal to the "href" constant */
-    const tagLink = document.querySelectorAll(href); //dodaje do stalej likni z href jak w stalej href
+    const tagLink = document.querySelectorAll('a[href="' + href + '"]'); //dodaje do stalej likni z href jak w stalej href //demyt...
     /* [DONE] START LOOP: for each found tag link */
     for (let tagLinkSingle of tagLink) {
     /* [DONE] add class active */
+      //console.log(tagLinkSingle);
       tagLinkSingle.classList.add('active');
     /* [DONE] END LOOP: for each found tag link */
     }
@@ -203,11 +226,11 @@
     const clickedElement = this;
     const href = clickedElement.getAttribute('href');
     const tag = href.replace('#auth-', '');  //zmiana na wybór hrefa zaczynajacego sie od auth...
-    const activeClass = document.querySelectorAll('a.active[href^="#tag-"]');
+    const activeClass = document.querySelectorAll('a.active[href^="#auth-"]');
     for (let activeSingle of activeClass) {
       activeSingle.classList.remove('active');
     }
-    const tagLink = document.querySelectorAll(href);
+    const tagLink = document.querySelectorAll('a[href="' + href + '"]'); //tBC !!!
     for (let tagLinkSingle of tagLink) {
       tagLinkSingle.classList.add('active');
     }
