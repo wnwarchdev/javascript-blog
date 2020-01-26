@@ -30,8 +30,8 @@
     optTitleSelector = '.post-title',
     optTitleListSelector = '.titles',
     optAuthorSelector = '.post-author',
-    optArticleTagsSelector = '.post-tags .list';
-
+    optArticleTagsSelector = '.post-tags .list',
+    optTagsListSelector = '.tags.list';
 
   //function generateTitleLinks ()
   function generateTitleLinks(customSelector = '') {
@@ -70,6 +70,8 @@
   generateTitleLinks();
 
   function generateTags(){ //deklaracja funkcji dodajacej tagi pod artykulem
+    /* [NEW] create a new variable allTags with an empty array */
+    let allTags = [];
     /* [DONE] find all articles */
     //const titleList = document.querySelectorAll(optArticleSelector);
     const titleList = document.querySelectorAll(optArticleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
@@ -96,11 +98,21 @@
         html = html + linkHTML; //nowy zapis dopisany do pustej zmiennej
         //console.log(html);
         /* [DONE] END LOOP: for each tag */
+        /* [NEW] check if this link is NOT already in allTags */
+        if(allTags.indexOf(linkHTML) == -1){
+          /* [NEW] add generated code to allTags array */
+          allTags.push(linkHTML);
+        }
       }
       /* [DONE] insert HTML of all the links into the tags wrapper */
       tagsWrapper.innerHTML = html;  //dodaje nowy zapis do dokumentu html
       //console.log(html);
-    /* [DONE] END LOOP: for every article: */
+      /* [DONE] END LOOP: for every article: */
+      /* [NEW] find list of tags in right column */
+      const tagList = document.querySelector('.tags');
+
+      /* [NEW] add html from allTags to tagList */
+      tagList.innerHTML = allTags.join(' ');
     }
   }
 
