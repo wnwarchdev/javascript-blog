@@ -48,15 +48,14 @@
 
 
       const articleId = article.getAttribute('id');
-
+      console.log(articleId);
 
       const articleTitle = article.querySelector(optTitleSelector).innerHTML;
-
+      console.log(articleTitle);
 
       const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
-
       html = html + linkHTML;
-
+      console.log(linkHTML);
     }
 
     titleList.innerHTML = html;
@@ -171,7 +170,7 @@
       let html = ''; //pusta zmienna
       /* [DONE] get tags from data-tags attribute */
       let dataTags = titleSingle.getAttribute('data-author'); //zmienna wyciagajaca nazwe tagow z atrybutu data-tags zapisane jako jeden ciag znakow
-      console.log(dataTags);
+      //console.log(dataTags);
 
       const linkHTML = 'wanted by: <a href="#auth-' + dataTags + '">' + dataTags + '</a> ';
 
