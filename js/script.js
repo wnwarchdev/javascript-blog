@@ -69,10 +69,25 @@
 
   generateTitleLinks();
 
-  function calculateTagsParams() {
+  /* do skonczenia
+
+  function calculateTagsParams(tags) {
+
+  const countList = {min:0 , max:0 };
+
+  for (let tagSingle in tags) {
 
 
   }
+
+
+  }
+
+
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams)
+
+  */
 
   function generateTags(){ //deklaracja funkcji dodajacej tagi pod artykulem
     /* [NEW] create a new variable allTags with an empty array */
@@ -117,10 +132,8 @@
       //console.log(html);
       /* [DONE] END LOOP: for every article: */
       /* [NEW] find list of tags in right column */
-      const tagList = document.querySelector('.tags');
-      //console.log(tagList);
-      //const tagsParams = calculateTagsParams(allTags);
-      //console.log('tagsParams:', tagsParams)
+      const tagList = document.querySelector(optTagsListSelector);
+
       /* [NEW] create variable for all links HTML code */
       let allTagsHTML = '';
 
@@ -231,6 +244,7 @@
       activeSingle.classList.remove('active');
     }
     const tagLink = document.querySelectorAll('a[href="' + href + '"]'); //tBC !!!
+    console.log(tagLink);
     for (let tagLinkSingle of tagLink) {
       tagLinkSingle.classList.add('active');
     }
