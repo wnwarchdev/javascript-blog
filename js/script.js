@@ -31,7 +31,10 @@
     optTitleListSelector = '.titles',
     optAuthorSelector = '.post-author',
     optArticleTagsSelector = '.post-tags .list',
-    optTagsListSelector = '.tags.list';
+    optTagsListSelector = '.tags.list',
+    optCloudClassCount = 5 ,
+    optCloudClassPrefix = 'tag-size-',
+    optAuthListSelector = '.authors.list';
 
   //function generateTitleLinks ()
   function generateTitleLinks(customSelector = '') {
@@ -69,25 +72,40 @@
 
   generateTitleLinks();
 
-  /* do skonczenia
-
-  function calculateTagsParams(tags) {
-
-  const countList = {min:0 , max:0 };
-
-  for (let tagSingle in tags) {
 
 
-  }
+  function calculateTagsParams(tags) { //deklaracja funkcji liczącej wystąpienie tagów
+
+    //console.log(tags);
+
+    const countList = {min: 99 , max: 0}; //ehh jednak za kodillą...
+    //console.log(Object.values[1](obj))
+
+    for(let tag in tags){
+      //console.log(tag + ' is used ' + tags[tag] + ' times');
+
+      if(tags[tag] > countList.max){
+        countList.max = tags[tag];
+      }
+
+      if(tags[tag] < countList.min){
+        countList.min = tags[tag];
+      }
+
+    }
+
+    return countList;
+  } //koniec deklaracji calculateTagsParams
+
+  function calculateTagClass (count, params) {
+
+    const classNumber = Math.floor( ( (count - params.min) / (params.max - params.min) ) * (optCloudClassCount -1) + 1 );
 
 
-  }
+    return optCloudClassPrefix + classNumber;
 
+  } //koniec deklaracji calculateTagClass
 
-  const tagsParams = calculateTagsParams(allTags);
-  console.log('tagsParams:', tagsParams)
-
-  */
 
   function generateTags(){ //deklaracja funkcji dodajacej tagi pod artykulem
     /* [NEW] create a new variable allTags with an empty array */
@@ -119,7 +137,6 @@
         //console.log(html);
         /* [DONE] END LOOP: for each tag */
         /* [NEW] check if this link is NOT already in allTags */
-        /* [NEW] check if this link is NOT already in allTags */
         if(!allTags[tag]) {
           /* [NEW] add tag to allTags object */
           allTags[tag] = 1;
@@ -134,15 +151,21 @@
       /* [NEW] find list of tags in right column */
       const tagList = document.querySelector(optTagsListSelector);
 
+      const tagsParams = calculateTagsParams(allTags);
+      //console.log('tagsParams:', tagsParams)
+
       /* [NEW] create variable for all links HTML code */
       let allTagsHTML = '';
 
       /* [NEW] START LOOP: for each tag in allTags: */
       for(let tag in allTags){
         //console.log(tag);
+        const tagLinkHTML = '<a href="#tag-' + tag + '" class="' + calculateTagClass(allTags[tag], tagsParams) + '">' + tag + '</a>&nbsp;(' + allTags[tag] + ') '; //spacja
+        //console.log('tagLinkHTML:', tagLinkHTML);
         //console.log(allTags[tag]);
         /* [NEW] generate code of a link and add it to allTagsHTML */
-        allTagsHTML += '<a href="#tag-' + tag + '">' + tag + '</a>' + ' (' + allTags[tag] + ') ';
+        //allTagsHTML += '<a class="" href="#tag-' + tag + '">' + tag + '</a>' + ' (' + allTags[tag] + ') ';
+        allTagsHTML += tagLinkHTML;
       }
       /* [NEW] END LOOP: for each tag in allTags: */
 
@@ -166,7 +189,7 @@
     const tag = href.replace('#tag-', ''); //usuwa fragmen tektu ze zmiennej i zapisuje do nowej stalej tag
     //console.log(tag);
     /* [DONE] find all tag links with class active */
-    const activeClass = document.querySelectorAll('a.active[href^="#tag-"]'); //przypisuje do stalej atrybut aktywnego linku zaczynajacy sie od #tag-
+    const activeClass = document.querySelectorAll('a.active'); //przypisuje do stalej atrybut aktywnego linku zaczynajacy sie od #tag-
     //console.log(activeClass);
     /* [DONE] START LOOP: for each active tag link */
     for (let activeSingle of activeClass) {
@@ -205,55 +228,94 @@
 
 
   function generateAuthors(){ //deklaracja funkcji dodajacej tagi pod artykulem
+    /* [NEW] create a new variable allTags with an empty array */
+    let allAuth = {};
     /* [DONE] find all articles */
     //const titleList = document.querySelectorAll(optArticleSelector);
-    const titleList = document.querySelectorAll(optArticleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
+    const articleList = document.querySelectorAll(optArticleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
+    //let allAuthors = {}
     //console.log(titleList);
     /* [DONE] START LOOP: for every article: */
-    for (let titleSingle of titleList) {
+    for (let articleSingle of articleList) {
     /* [DONE] find tags wrapper */
-      let tagsWrapper = titleSingle.querySelector(optAuthorSelector); //zmienna dla tresci wrappera tj kod html <li></li>
+      let authWrapper = articleSingle.querySelector(optAuthorSelector); //zmienna dla tresci wrappera tj kod html <li></li>
       //console.log(tagsWrapper);
       /* [DONE] make html variable with empty string */
       let html = ''; //pusta zmienna
       /* [DONE] get tags from data-tags attribute */
-      let dataTags = titleSingle.getAttribute('data-author'); //zmienna wyciagajaca nazwe tagow z atrybutu data-tags zapisane jako jeden ciag znakow
+      let dataAuth = articleSingle.getAttribute('data-author'); //zmienna wyciagajaca nazwe tagow z atrybutu data-tags zapisane jako jeden ciag znakow
       //console.log(dataTags);
+      const linkHTML = 'wanted by: <a href="#auth-' + dataAuth + '">' + dataAuth + '</a> ';
 
-      const linkHTML = 'wanted by: <a href="#auth-' + dataTags + '">' + dataTags + '</a> ';
 
       html = html + linkHTML;
       //console.log(articleTagsArray);
+      /* [NEW] check if this link is NOT already in allTags */
+      if(!allAuth[dataAuth]) {
+        /* [NEW] add tag to allTags object */
+        allAuth[dataAuth] = 1;
+      } else {
+        allAuth[dataAuth]++; ////////////////////////////////
+      }
+      //console.log(allAuth);
       /* [DONE] START LOOP: for each tag */
       /* [DONE] insert HTML of all the links into the tags wrapper */
-      tagsWrapper.innerHTML = html;  //dodaje nowy zapis do dokumentu html
+      authWrapper.innerHTML = html;  //dodaje nowy zapis do dokumentu html
       //console.log(html);
-    /* [DONE] END LOOP: for every article: */
+
+
+      const authList = document.querySelector(optAuthListSelector);
+      //console.log(authList);
+      const authParams = calculateTagsParams(allAuth);
+      //console.log(authParams);
+      /* [DONE] END LOOP: for every article: */
+      /* [NEW] create variable for all links HTML code */
+      let allAuthHTML = '';
+
+      /* [NEW] START LOOP: for each tag in allTags: */
+      for(let auth in allAuth){
+        //console.log(tag);
+        const authLinkHTML = '<a href="#auth-' + auth + '" class="' + calculateTagClass(allAuth[auth], authParams) + '">' + auth + '</a>&nbsp;(' + allAuth[auth] + ') '; //spacja
+        //console.log('tagLinkHTML:', tagLinkHTML);
+        //console.log(allTags[tag]);
+        /* [NEW] generate code of a link and add it to allTagsHTML */
+        //allTagsHTML += '<a class="" href="#tag-' + tag + '">' + tag + '</a>' + ' (' + allTags[tag] + ') ';
+        allAuthHTML += authLinkHTML;
+      }
+      /* [NEW] END LOOP: for each tag in allTags: */
+
+      /*[NEW] add HTML from allTagsHTML to tagList */
+      authList.innerHTML = allAuthHTML;
     }
   }
   generateAuthors(); //wywolanie funkcji powyzej
 
 
-  function authorClickHandler(event){  //deklaracja
+  function authorClickHandler(event) {  //deklaracja
     event.preventDefault();
+    //console.log('start!');
     const clickedElement = this;
     const href = clickedElement.getAttribute('href');
-    const tag = href.replace('#auth-', '');  //zmiana na wybór hrefa zaczynajacego sie od auth...
-    const activeClass = document.querySelectorAll('a.active[href^="#auth-"]');
+    //console.log(href);
+    const authName = href.replace('#auth-', '');  //zmiana na wybór hrefa zaczynajacego sie od auth...
+    //console.log(authName);
+    const activeClass = document.querySelectorAll('a.active');
+    //console.log(activeClass);
     for (let activeSingle of activeClass) {
       activeSingle.classList.remove('active');
     }
-    const tagLink = document.querySelectorAll('a[href="' + href + '"]'); //tBC !!!
-    console.log(tagLink);
-    for (let tagLinkSingle of tagLink) {
-      tagLinkSingle.classList.add('active');
+    const authorLink = document.querySelectorAll('a[href="' + href + '"]'); //tBC !!!
+    //console.log(authorLink);
+    for (let authorLinkSingle of authorLink) {
+      authorLinkSingle.classList.add('active');
     }
-    generateTitleLinks('[data-author="' + tag + '"]'); //zmiana na generowanie listy po data-author
+    generateTitleLinks('[data-author="' + authName + '"]'); //zmiana na generowanie listy po data-author
   }
 
 
   function addClickListenersToAuthors() { //deklaracja
     const allLinks = document.querySelectorAll('a[href^="#auth-"]'); //dodaje do stałej wszystkie linki hrefem "#auth-
+    //console.log(allLinks);
     for (let linkSingle of allLinks) {
       linkSingle.addEventListener('click', authorClickHandler); //do wszystkich tych linkow dodaj listener wlaczany przez click i uruchamiajacy authorClickHandler
     }
