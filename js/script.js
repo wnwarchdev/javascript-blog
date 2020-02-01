@@ -1,4 +1,18 @@
 {
+  const opt = {
+    articleSelector: '.post',
+    titleSelector: '.post-title',
+    titleListSelector: '.titles',
+    authorSelector: '.post-author',
+    articleTagsSelector: '.post-tags .list',
+    tagsListSelector: '.tags.list',
+    cloudClassCount: 5 ,
+    cloudClassPrefix: 'tag-size-',
+    authListSelector: '.authors.list'
+  };
+
+
+
   const titleClickHandler = function(event){
     event.preventDefault();
     const clickedElement = this;
@@ -26,24 +40,16 @@
   };
 
 
-  const optArticleSelector = '.post',
-    optTitleSelector = '.post-title',
-    optTitleListSelector = '.titles',
-    optAuthorSelector = '.post-author',
-    optArticleTagsSelector = '.post-tags .list',
-    optTagsListSelector = '.tags.list',
-    optCloudClassCount = 5 ,
-    optCloudClassPrefix = 'tag-size-',
-    optAuthListSelector = '.authors.list';
+
 
   //function generateTitleLinks ()
   function generateTitleLinks(customSelector = '') {
 
-    let titleList = document.querySelector(optTitleListSelector);
+    let titleList = document.querySelector(opt.titleListSelector);
 
-    document.querySelector(optTitleListSelector).innerHTML='';
+    document.querySelector(opt.titleListSelector).innerHTML='';
 
-    const articles = document.querySelectorAll(optArticleSelector + customSelector);
+    const articles = document.querySelectorAll(opt.articleSelector + customSelector);
 
     let html = '';
 
@@ -53,7 +59,7 @@
       const articleId = article.getAttribute('id');
       //console.log(articleId);
 
-      const articleTitle = article.querySelector(optTitleSelector).innerHTML;
+      const articleTitle = article.querySelector(opt.titleSelector).innerHTML;
       //console.log(articleTitle);
 
       const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
@@ -99,10 +105,10 @@
 
   function calculateTagClass (count, params) {
 
-    const classNumber = Math.floor( ( (count - params.min) / (params.max - params.min) ) * (optCloudClassCount -1) + 1 );
+    const classNumber = Math.floor( ( (count - params.min) / (params.max - params.min) ) * (opt.cloudClassCount -1) + 1 );
 
 
-    return optCloudClassPrefix + classNumber;
+    return opt.cloudClassPrefix + classNumber;
 
   } //koniec deklaracji calculateTagClass
 
@@ -111,13 +117,13 @@
     /* [NEW] create a new variable allTags with an empty array */
     let allTags = {};
     /* [DONE] find all articles */
-    //const titleList = document.querySelectorAll(optArticleSelector);
-    const titleList = document.querySelectorAll(optArticleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
+    //const titleList = document.querySelectorAll(opt.articleSelector);
+    const titleList = document.querySelectorAll(opt.articleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
     //console.log(titleList);
     /* [DONE] START LOOP: for every article: */
     for (let titleSingle of titleList) {
     /* [DONE] find tags wrapper */
-      let tagsWrapper = titleSingle.querySelector(optArticleTagsSelector); //zmienna dla tresci wrappera tj kod html <li></li>
+      let tagsWrapper = titleSingle.querySelector(opt.articleTagsSelector); //zmienna dla tresci wrappera tj kod html <li></li>
       //console.log(tagsWrapper);
       /* [DONE] make html variable with empty string */
       let html = ''; //pusta zmienna
@@ -149,7 +155,7 @@
       //console.log(html);
       /* [DONE] END LOOP: for every article: */
       /* [NEW] find list of tags in right column */
-      const tagList = document.querySelector(optTagsListSelector);
+      const tagList = document.querySelector(opt.tagsListSelector);
 
       const tagsParams = calculateTagsParams(allTags);
       //console.log('tagsParams:', tagsParams)
@@ -231,14 +237,14 @@
     /* [NEW] create a new variable allTags with an empty array */
     let allAuth = {};
     /* [DONE] find all articles */
-    //const titleList = document.querySelectorAll(optArticleSelector);
-    const articleList = document.querySelectorAll(optArticleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
+    //const titleList = document.querySelectorAll(opt.articleSelector);
+    const articleList = document.querySelectorAll(opt.articleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
     //let allAuthors = {}
     //console.log(titleList);
     /* [DONE] START LOOP: for every article: */
     for (let articleSingle of articleList) {
     /* [DONE] find tags wrapper */
-      let authWrapper = articleSingle.querySelector(optAuthorSelector); //zmienna dla tresci wrappera tj kod html <li></li>
+      let authWrapper = articleSingle.querySelector(opt.authorSelector); //zmienna dla tresci wrappera tj kod html <li></li>
       //console.log(tagsWrapper);
       /* [DONE] make html variable with empty string */
       let html = ''; //pusta zmienna
@@ -264,7 +270,7 @@
       //console.log(html);
 
 
-      const authList = document.querySelector(optAuthListSelector);
+      const authList = document.querySelector(opt.authListSelector);
       //console.log(authList);
       const authParams = calculateTagsParams(allAuth);
       //console.log(authParams);
@@ -339,11 +345,11 @@
 /* To jest stary,prawie caly kod sprzed blednego zapisu w htmlu
   function generateAuthors() { //deklaracja funkcji dodajacej autorów do artykulow na podstawie customowego atrybuty "authors" w html
 
-    const titleList = document.querySelectorAll(optArticleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
+    const titleList = document.querySelectorAll(opt.articleSelector); //wyszukuje elementy post - artykuly z calego dokumentu
     //console.log(titleList);
     for (let titleSingle of titleList) {
 
-      let authorWrapper = titleSingle.querySelector(optAuthorSelector); //zmienna dla tresci html wrappera z info o autorze
+      let authorWrapper = titleSingle.querySelector(opt.authorSelector); //zmienna dla tresci html wrappera z info o autorze
       //console.log(authorWrapper);
       let authorTag = authorWrapper.getAttribute('author'); //zmienna wyciagajaca autora z w.w. zmiennej
       //console.log(authorTag);
